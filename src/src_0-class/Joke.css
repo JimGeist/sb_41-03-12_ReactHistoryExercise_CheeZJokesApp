@@ -1,0 +1,51 @@
+.App-logo {
+  height: 30vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 5s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.Joke {
+  margin-left: 1.0rem;
+  margin-bottom: 0.75em;
+}
+
+.Joke-votearea {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.Joke-votearea > * {
+  margin-right: 1em;
+
+}
+.Joke-text {
+  margin-left: 1em;
+  display: inline-block;
+  width: 500px;
+}
+
+.JokeClass-getmore {
+  margin: 1em 0;
+  font-size: 150%;
+  border-radius: 0.5em;
+  background-color: tomato;
+  color: white;
+}
+
+.JokeClass-votes {
+  width: 2.0rem;
+}
