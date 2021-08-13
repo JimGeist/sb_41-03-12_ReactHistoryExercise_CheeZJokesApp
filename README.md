@@ -1,70 +1,25 @@
-# Getting Started with Create React App
+# sb_41-03-12_ReactHistoryExercise_CheeZJokesApp
+ 
+## Technology Stack
+- **Front-end**: ReactJS
+- **Back-end**: n/a
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Assignment Details
 
-## Available Scripts
+Take a functional-based React application and convert it to a class-based application. There should be no perceivable differences between the 2 applcations.
 
-In the project directory, you can run:
+Test were not created for this assignment.
 
-### `npm start`
+## Additional Details
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**Enhancements**
+- Tweeked the react spinner so there is something displayed while the application loads. 
+- The applications appear side-by-side. The 'class-based' application is on the left and the 'functional-based' component application is on the right . . . *OR* maybe I just used the functional-based component twice and just changed the button text on one of them!
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+**Difficulties**
+- No solid complete examples from the video or sample code to pull from. The class version was rendered in `index.js`. The class grew out of an initial class with a `constructor`, `componentDidMount()`, `componentDidUpdate()`, and `render()` lifecycle methods and lots of `console.log`s and `console.dir`s to get an idea of the flow. 
+- not immediately realizing `this.state` in the constructor is where `state` values had to go. `state` is set up as on object so multiple values can have state.
+- Function not found? `.bind(this)`. At least `bind` and `this` are not as foreign to me as they were on the [Connect Four refactoring](https://github.com/JimGeist/sb_12-02-10_ConnectFourRefactoring) assignment where the game had to get converted from functions to a class.
+- Some research to get the fontawesome fonts appearing correctly in the based-based application. 
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

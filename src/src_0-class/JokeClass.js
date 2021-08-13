@@ -2,18 +2,15 @@ import React from "react";
 import logo from './logo.svg';
 import axios from "axios";
 
-import "./Joke.css";
+import "./JokeClass.css";
 
 class JokeClass extends React.Component {
     constructor(props) {
-        console.log("constructor: props");
-        console.dir(props);
 
         super(props);
-        this.state = { count: props.numJokesToGet, jokes: [] };
+        this.state = { jokes: [] };
         this.numJokesToGet = props.numJokesToGet || 10;
-        // this.jokes = [];
-        // this.componentDidMount = this.componentDidMount.bind(this);
+
         this.setJokes = this.setJokes.bind(this);
         this.jokeVote = this.jokeVote.bind(this);
         this.generateNewJokes = this.generateNewJokes.bind(this);
@@ -21,17 +18,27 @@ class JokeClass extends React.Component {
     }
 
     setJokes(newJokes) {
-        // this.jokes = [...newJokes];
+        // set state to the the jokes passed in newJokes.
+
         this.setState({ jokes: [...newJokes] });
-        console.log("JokeClass - setJokes: jokes=");
-        console.dir(this.state.jokes);
-        console.log("JokeClass - end");
+
     }
 
-
+    /**
+     * getJokes() method calls the jokes api for jokes and saves the jokes to state. 
+     * The getJokes() method requires nbrJokes, jokes, and setJokesFx arguments. getJokes() 
+     * does not return values but it does call a function to alter state.
+     * @param {*} nbrJoke is the number of jokes to retrieve.   
+     * @param {*} jokes is an array that is either empty or it holds the jokes to keep
+     *  (locked jokes). Lock joke functionality was not implemented.  
+     * @param {*} setJokesFx is the function to use to add the jokes retrieved to 
+     *  state.
+     */
     async getJokes(nbrJokes, jokes, setJokesFx) {
-        console.log(`getJokes: getting ${nbrJokes} jokes`);
+
         let j = [...jokes];
+
+        // not sure why seenJokes is here an not a constructor value.
         let seenJokes = new Set();
         try {
             while (j.length < nbrJokes) {
@@ -43,18 +50,13 @@ class JokeClass extends React.Component {
                 if (!seenJokes.has(jokeObj.id)) {
                     seenJokes.add(jokeObj.id);
                     j.push({ ...jokeObj, votes: 0 });
-                    // console.dir(jokeObj);
                 } else {
                     console.error("duplicate found!");
                 }
             }
-            console.log("getJokes: jokes(j)=");
-            console.dir(j);
-            // this.setState({ jokes: [...j] });
+
             setJokesFx(j);
-            // return (j);
-            // this.jokes = [...j];
-            // console.dir(this.jokes);
+
         } catch (e) {
             console.log(e);
         }
@@ -62,106 +64,44 @@ class JokeClass extends React.Component {
 
 
     componentDidMount() {
-        console.log("componentDidMount");
-        console.log(`   jokes.length:${this.state.jokes.length}`);
-
-
-
+        // component mounted. This is a do once thing -- the the jokes.
         if (this.state.jokes.length === 0) this.getJokes(this.numJokesToGet, this.state.jokes, this.setJokes);
 
-
-        // console.log("   jokes:");
-        // console.dir(this.jokes);
-
-        console.log("componentDidMount - end");
     }
 
 
-    // componentDidMount() {
-    //     console.log("componentDidMount");
-    //     console.log(`   jokes.length:${this.jokes.length}`);
-
-    //     async function getJokes(nbrJokes, jokes, setJokesFx) {
-    //         console.log(`   getting ${nbrJokes} jokes`);
-    //         let j = [...jokes];
-    //         let seenJokes = new Set();
-    //         try {
-    //             while (j.length < nbrJokes) {
-    //                 let res = await axios.get("https://icanhazdadjoke.com", {
-    //                     headers: { Accept: "application/json" }
-    //                 });
-    //                 let { status, ...jokeObj } = res.data;
-
-    //                 if (!seenJokes.has(jokeObj.id)) {
-    //                     seenJokes.add(jokeObj.id);
-    //                     j.push({ ...jokeObj, votes: 0 });
-    //                     // console.dir(jokeObj);
-    //                 } else {
-    //                     console.error("duplicate found!");
-    //                 }
-    //             }
-    //             console.log("componentDidMount - getJokes: jokes(j)=");
-    //             console.dir(j);
-    //             // this.setState({ jokes: [...j] });
-    //             setJokesFx(j);
-    //             // return (j);
-    //             // this.jokes = [...j];
-    //             // console.dir(this.jokes);
-    //         } catch (e) {
-    //             console.log(e);
-    //         }
-    //     }
-
-    //     if (this.state.jokes.length === 0) getJokes(this.numJokesToGet, this.state.jokes, this.setJokes);
-
-
-    //     // console.log("   jokes:");
-    //     // console.dir(this.jokes);
-
-    //     console.log("componentDidMount - end");
+    // componentDidUpdate() {
+    //     console.log("componentDidUpdate");
     // }
 
 
-
-    componentDidUpdate() {
-        console.log("componentDidUpdate");
-    }
-
-
-
     jokeVote(event) {
-        console.log("jokeVote: event=");
-        // fidn the classname fa-thumbs-up or fa-thumbs-down
-        // find the data id from dataset
+
+        // make a copy of the className and get the joke id from data.id. Copies were made because 
+        //  I am not sure when event is recycled by React.
         const holdClassName = (event.target.className).slice();
         const holdJokeID = event.target.dataset.id;
 
         let ctrAdjust = 1;
         if (holdClassName.indexOf("fa-thumbs-down") > -1) ctrAdjust = -1
 
-        // console.log(`jokeVote: ctrAdjust=${ctrAdjust}, jokeId=${holdJokeID}\n`);
-
+        // create a deep copy of state.jokes in jokesVote. Updates to the vote counter occur in the
+        //  jokesVote array and that array is later saved to state.
         const jokesVote = [...this.state.jokes]
 
-        // const idxJoke = this.state.jokes.findIndex((joke) => {
+        // Find the array index for the joke associated with the joke.id that was saved in the button's 
+        //  data-id argument.
         const idxJoke = jokesVote.findIndex((joke) => {
             return joke.id === holdJokeID
         });
 
-        // console.log(`jokeVote: ctrAdjust=${ctrAdjust}, jokeId=${holdJokeID}, idxJoke=${idxJoke}, currCount=${this.state.jokes[idxJoke].votes}\n`);
-        // this.state.jokes[idxJoke].votes = this.state.jokes[idxJoke].votes + ctrAdjust;
-        // console.log(`jokeVote: ctrAdjust=${ctrAdjust}, jokeId=${holdJokeID}, idxJoke=${idxJoke}, currCount=${this.state.jokes[idxJoke].votes}\n`);
-
         // Not sure if it is related to rapid button click, but sometimes a jokesVote[idxJoke] is undefined.
         // We'll do a truthy test on it.
         if (jokesVote[idxJoke]) {
-            console.log(`jokeVote: ctrAdjust=${ctrAdjust}, jokeId=${holdJokeID}, idxJoke=${idxJoke}, currCount=${jokesVote[idxJoke].votes}\n`);
             jokesVote[idxJoke].votes = jokesVote[idxJoke].votes + ctrAdjust;
-            console.log(`jokeVote: ctrAdjust=${ctrAdjust}, jokeId=${holdJokeID}, idxJoke=${idxJoke}, currCount=${jokesVote[idxJoke].votes}\n`);
 
-            // this.setState({ alter: Date.now() });
             this.setState({ jokes: jokesVote });
-            // console.dir(event);
+
         }
 
     }
@@ -171,10 +111,7 @@ class JokeClass extends React.Component {
     }
 
 
-
     render() {
-        console.log("rendering");
-        // const { count } = this.state;
 
         if (this.state.jokes.length > 0) {
             let sortedJokes = [...this.state.jokes].sort((a, b) => b.votes - a.votes);
@@ -188,7 +125,6 @@ class JokeClass extends React.Component {
                         return (
                             <div className="Joke" key={joke.id}>
                                 <div className="Joke-votearea">
-                                    {/* <button onClick={upVote}> */}
                                     <button onClick={this.jokeVote}>
                                         <i data-id={joke.id} className="fas fa-thumbs-up" />
                                     </button>
@@ -210,7 +146,6 @@ class JokeClass extends React.Component {
             );
 
         } else {
-            // return null;
             return (
                 <div>
                     {/* <i className="fas fa-cog App-logo" /> */}
@@ -221,48 +156,6 @@ class JokeClass extends React.Component {
 
         }
 
-
-
-        // return (
-        //     <div>
-        //         <button className="JokeClass-getmore" onClick={this.generateNewJokes}>
-        //             Get New Jokes
-        //         </button>
-        //         {/* <p>Number of Jokes: {this.state.jokes.length}</p> */}
-        //         {this.state.jokes.length === 0
-        //             ? <p>no joke</p>
-        //             : sortedJokes.map(joke => {
-        //                 return (
-        //                     <div className="Joke" key={joke.id}>
-        //                         <div className="Joke-votearea">
-        //                             {/* <button onClick={upVote}> */}
-        //                             <button onClick={this.jokeVote}>
-        //                                 <i data-id={joke.id} className="fas fa-thumbs-up" />
-        //                             </button>
-
-        //                             <button onClick={this.jokeVote}>
-        //                                 <i data-id={joke.id} className="fas fa-thumbs-down" />
-        //                             </button>
-
-        //                             <span className="JokeClass-votes">{joke.votes}</span>
-        //                         </div>
-
-        //                         <div className="Joke-text">{joke.joke}</div>
-        //                     </div>
-        //                 )
-        //             })
-        //         }
-        //         {/* <div>Current count: {count}</div>
-        //         <div>
-        //             <button onClick={() => this.setState({ count: count - 1 })}>
-        //                 -
-        //             </button>
-        //             <button onClick={() => this.setState({ count: count + 1 })}>
-        //                 +
-        //             </button>
-        //         </div> */}
-        //     </div>
-        // );
     }
 }
 
